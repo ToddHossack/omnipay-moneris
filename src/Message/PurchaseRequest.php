@@ -10,42 +10,129 @@ class PurchaseRequest extends AbstractRequest
 
     public function getData()
     {
-        $data = array();
-        $data['ps_store_id'] = $this->getPsStoreId();
-        $data['hpp_key'] = $this->getHppKey();
-
-        $data['charge_total'] = $this->getAmount();
-        $data['order_id'] = $this->getTransactionId();
-
-        if ($this->getCard()) {
-            $data['email'] = $this->getCard()->getEmail();
-
-            if(null !== ( $this->getCard()->getBillingCompany() ) ) 
-                $data['bill_company_name'] = $this->getCard()->getBillingCompany();
-            $data['bill_first_name'] = $this->getCard()->getFirstname();
-            $data['bill_last_name'] = $this->getCard()->getLastname();
-            $data['bill_address_one'] = $this->getCard()->getAddress1();
-            $data['bill_city'] = $this->getCard()->getCity();
-            $data['bill_postal_code'] = $this->getCard()->getPostcode();
-            $data['bill_state_or_province'] = $this->getCard()->getState();
-            $data['bill_country'] = $this->getCard()->getCountry();
-            $data['bill_phone'] = $this->getCard()->getPhone();
-
-            if(null !== ( $this->getCard()->getShippingCompany() ) )
-                $data['ship_company_name'] = $this->getCard()->getShippingCompany();
-            $data['ship_first_name'] = $this->getCard()->getShippingFirstname();
-            $data['ship_last_name'] = $this->getCard()->getShippingLastname();
-            $data['ship_address_one'] = $this->getCard()->getShippingAddress1();
-            $data['ship_city'] = $this->getCard()->getShippingCity();
-            $data['ship_postal_code'] = $this->getCard()->getShippingPostcode();
-            $data['ship_state_or_province'] = $this->getCard()->getShippingState();
-            $data['ship_country'] = $this->getCard()->getShippingCountry();
-            $data['ship_phone'] = $this->getCard()->getShippingPhone();
-        }
+        // Required data
+        $data = $this->getRequiredData();
+        
+        // Billing data
+        $this->addBillingData($data);
+        
+        // Shipping data
+        $this->addShippingData($data);
+        
+        // Optional data
+        $this->addOptionalData($data);
+        
+        // Rvar data
+        $this->addRvarData($data);
 
         return $data;
     }
+    
+    /**
+     * Gather basic data required by Moneris
+     * @return array
+     */
+    protected function getRequiredData()
+    {
+        return [
+            'ps_store_id' => $this->getPsStoreId(),
+            'hpp_key' => $this->getHppKey(),
+            'charge_total' => $this->getAmount()
+        ];
+    }
+    
+    /**
+     * Add optional data
+     * @param array $data
+     */
+    protected function addOptionalData(&$data)
+    {
+        // Order ID
+        $data['order_id'] = $this->getTransactionId();
+        
+        // Email
+        $card = $this->getCard();
+        if($card && $card->getEmail()) {
+            $data['email'] = $card->getEmail();
+        }
+        // Customer ID
+        if($this->getCustId() !== null) {
+            $data['cust_id'] = $this->getCustId();
+        }
 
+    }
+    
+    /**
+     * Add billing details
+     * @param array $data
+     */
+    protected function addBillingData(&$data)
+    {
+        $card = $this->getCard();
+        if(!is_object($card)) {
+            return;
+        }
+        
+        if(null !== ( $card->getBillingCompany() ) ) {
+            $data['bill_company_name'] = $card->getBillingCompany();
+        }
+                
+        $data['bill_first_name'] = $card->getFirstname();
+        $data['bill_last_name'] = $card->getLastname();
+        $data['bill_address_one'] = $card->getAddress1();
+        $data['bill_city'] = $card->getCity();
+        $data['bill_postal_code'] = $card->getPostcode();
+        $data['bill_state_or_province'] = $card->getState();
+        $data['bill_country'] = $card->getCountry();
+        $data['bill_phone'] = $card->getPhone();
+
+    }
+    
+    /**
+     * Add shipping details
+     * @param array $data
+     */
+    protected function addShippingData(&$data)
+    {
+        $card = $this->getCard();
+        if(!is_object($card)) {
+            return;
+        }
+
+        if(null !== ( $card->getShippingCompany() ) ) {
+            $data['ship_company_name'] = $card->getShippingCompany();
+        }
+
+        $data['ship_first_name'] = $card->getShippingFirstname();
+        $data['ship_last_name'] = $card->getShippingLastname();
+        $data['ship_address_one'] = $card->getShippingAddress1();
+        $data['ship_city'] = $card->getShippingCity();
+        $data['ship_postal_code'] = $card->getShippingPostcode();
+        $data['ship_state_or_province'] = $card->getShippingState();
+        $data['ship_country'] = $card->getShippingCountry();
+        $data['ship_phone'] = $card->getShippingPhone();
+
+    }
+    
+    /**
+     * Add custom response variables
+     * @param array $data
+     */
+    protected function addRvarData(&$data)
+    {
+        $rvar = $this->getRvar();
+
+        if(!is_array($rvar)) {
+            return;
+        }
+        
+        foreach($rvar as $key => $value) {
+            $data['rvar'.$key] = $value;
+        }
+    
+    }
+        
+        
     public function sendData($data)
     {
         return $this->response = new PurchaseResponse($this, $data);

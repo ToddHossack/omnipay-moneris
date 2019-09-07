@@ -1,7 +1,7 @@
 {
-    "name": "kbahchevanov/omnipay-moneris",
+    "name": "toddhossack/omnipay-moneris",
     "type": "library",
-    "description": "Moneris driver for the Omnipay payment processing library - Canada Merchant Resource Center",
+    "description": "Moneris HPP driver for the Omnipay payment processing library - Canada Merchant Resource Center",
     "keywords": [
         "moneris",
         "gateway",
@@ -10,7 +10,7 @@
         "pay",
         "payment"
     ],
-    "homepage": "https://github.com/kbahchevanov/omnipay-moneris",
+    "homepage": "https://github.com/ToddHossack/omnipay-moneris-hpp",
     "license": "MIT",
     "autoload": {
         "psr-0": { "Omnipay\\Moneris\\" : "src/" }

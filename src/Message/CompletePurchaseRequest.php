@@ -9,7 +9,12 @@ class CompletePurchaseRequest extends PurchaseRequest
 {
     public function getData()
     {
-     	return $this->httpRequest->query->all();   
+        $requestMethod = $this->httpRequest->server->get('REQUEST_METHOD');
+        if($requestMethod === 'POST') {
+            return $this->httpRequest->request->all();
+        } else {
+            return $this->httpRequest->query->all();
+        }
     }
 
     public function sendData($data)
