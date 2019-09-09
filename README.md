@@ -1,6 +1,6 @@
-# omnipay-moneris
+# omnipay-moneris-hpp
 
-Moneris driver for the Omnipay payment processing library - Canada Merchant Resource Center
+Moneris HPP driver for the Omnipay payment processing library - Canada Merchant Resource Center
 
 # Installation
 Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply add it to your `composer.json` file:
@@ -8,7 +8,7 @@ Omnipay is installed via [Composer](http://getcomposer.org/). To install, simply
 ```json
 {
     "require": {
-        "kbahchevanov/omnipay-moneris": "1.0.x-dev"
+        "toddhossack/omnipay-moneris-hpp": "^0.1.0"
     }
 }
 ```
