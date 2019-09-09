@@ -1,5 +1,5 @@
 {
-    "name": "toddhossack/omnipay-moneris",
+    "name": "toddhossack/omnipay-moneris-hpp",
     "type": "library",
     "description": "Moneris HPP driver for the Omnipay payment processing library - Canada Merchant Resource Center",
     "keywords": [
