@@ -1,5 +1,4 @@
 <?php
-
 namespace Omnipay\Moneris;
 
 use Omnipay\Common\AbstractGateway;

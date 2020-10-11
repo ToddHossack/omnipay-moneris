@@ -1,5 +1,4 @@
 <?php
-
 namespace Omnipay\Moneris\Message;
 
 /**
@@ -59,7 +58,10 @@ class PurchaseRequest extends AbstractRequest
         if($this->getCustId() !== null) {
             $data['cust_id'] = $this->getCustId();
         }
-
+        // Note
+        if($this->getNote() !== null) {
+            $data['note'] = $this->getNote();
+        }
     }
     
     /**

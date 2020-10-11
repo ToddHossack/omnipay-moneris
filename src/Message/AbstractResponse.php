@@ -1,5 +1,4 @@
 <?php
-
 namespace Omnipay\Moneris\Message;
 
 class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse

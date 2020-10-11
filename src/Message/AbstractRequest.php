@@ -1,5 +1,4 @@
 <?php
-
 namespace Omnipay\Moneris\Message;
 
 /**
@@ -7,11 +6,8 @@ namespace Omnipay\Moneris\Message;
  */
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
-
     protected $liveEndpoint = 'https://www3.moneris.com/HPPDP/index.php';
-    //protected $testEndpoint = 'https://esqa.moneris.com/HPPDP/index.php';
-    
-    protected $testEndpoint = 'http://rdos-subsite.mydev/payment-page/mockgateway';
+    protected $testEndpoint = 'https://esqa.moneris.com/HPPDP/index.php';
     
     public function getPsStoreId()
     {
@@ -36,6 +32,15 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function getEndpoint()
     {
         return $this->getTestMode() ? $this->testEndpoint : $this->liveEndpoint;
+    }
+    
+    /**
+     * Set test end point - allow for local development / mock gateways
+     * @param string $url
+     */
+    public function setTestEndpoint($url)
+    {
+        $this->testEndpoint = $url;
     }
     
     public function getCustId()
